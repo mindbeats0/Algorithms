@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN=1e6;
+char s[MAXN+5];
+int z[MAXN+5],n;
+bool prefsuf[MAXN+5];
+int countLen[MAXN+5];
+void computeZ(){
+	int L = 0, R = 0;
+	for (int i = 1; i < n; i++) {
+	  if (i > R) {
+		L = R = i;
+		while (R < n && s[R-L] == s[R]) R++;
+		z[i] = R-L; R--;
+	  } else {
+		int k = i-L;
+		if (z[k] < R-i+1) z[i] = z[k];
+		else {
+		  L = i;
+		  while (R < n && s[R-L] == s[R]) R++;
+		  z[i] = R-L; R--;
+		}
+	  }
+	}
+
+}
+int main(){
+	scanf("%s",s);
+	n = strlen(s);
+	computeZ();
+	for(int i=0;i<n;i++){
+		if(z[i] == n-i)prefsuf[z[i]]=true;
+		countLen[z[i]]++;
+	}
+	for(int i=n-1;i>=1;i--)countLen[i] += countLen[i+1];
+	int len=0;
+	for(int i=n;i>0 && !len;i--){
+		if(prefsuf[i] && countLen[i]>=2)len=i;
+	}
+	if(!len)printf("Just a legend\n");
+	else{
+		s[len]='\0';
+		printf("%s\n",s);
+	}
+}
