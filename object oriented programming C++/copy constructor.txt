@@ -1,0 +1,6 @@
+copy constructor is used when :
+------------------------------
+(create then assign)
+1.When instantiating one object and initializing it with values from another object (A a = b;).
+2.When passing an object by value.
+3.When an object is returned from a function by value.
